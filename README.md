@@ -52,6 +52,15 @@ go-task setup-laptop
 | `setup-desktop` | Full desktop setup |
 | `setup-laptop` | Full laptop setup |
 
+## Theme Switcher
+
+To test the theme timers manually after running `auto-theme-switcher`:
+
+```bash
+systemctl --user start theme-light.service
+systemctl --user start theme-dark.service
+```
+
 ## LUKS / TPM2 Setup
 
 Before enrolling TPM2, verify your LUKS device:
