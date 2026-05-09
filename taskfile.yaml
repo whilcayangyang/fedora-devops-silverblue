@@ -7,12 +7,12 @@ tasks:
       - go-task --list
 
   upgrade:
-    desc: Upgrade the system via rpm-ostree
+    desc: Upgrade the system via rpm-ostree (reboot required)
     cmds:
       - rpm-ostree upgrade
 
   install-desktop:
-    desc: Install system packages for desktop
+    desc: Install system packages for desktop (reboot required)
     cmds:
       - rpm-ostree install
         go-task
@@ -34,7 +34,7 @@ tasks:
         vim
 
   install-laptop:
-    desc: Install system packages for laptop (includes tailscale)
+    desc: Install system packages for laptop (reboot required)
     cmds:
       - rpm-ostree install
         go-task
@@ -198,6 +198,24 @@ tasks:
     desc: Regenerate initramfs for all kernels via dracut
     cmds:
       - sudo dracut -fv --regenerate-all
+
+  install-virt:
+    desc: Install virtualization packages via rpm-ostree (reboot required)
+    cmds:
+      - rpm-ostree install
+        virt-manager
+        qemu-kvm
+        libvirt
+        libvirt-daemon-config-network
+        virt-install
+        bridge-utils
+
+  config-virt:
+    desc: Enable libvirtd and add user to libvirt group (reboot required)
+    cmds:
+      - sudo systemctl enable --now libvirtd
+      - sudo grep -E '^libvirt:' /usr/lib/group | sudo tee -a /etc/group
+      - sudo usermod -aG libvirt $USER
 
   setup-desktop:
     desc: Full desktop setup (upgrade, install, toolbox, flatpak, ohmyzsh)
