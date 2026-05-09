@@ -76,7 +76,6 @@ tasks:
         org.gtk.Gtk3theme.adw-gtk3-dark
         org.gimp.GIMP
         com.discordapp.Discord
-        com.slack.Slack
         com.jgraph.drawio.desktop
         it.mijorus.gearlever
         com.github.tchx84.Flatseal
@@ -98,7 +97,6 @@ tasks:
         org.gtk.Gtk3theme.adw-gtk3-dark
         org.gimp.GIMP
         com.discordapp.Discord
-        com.slack.Slack
         com.jgraph.drawio.desktop
         it.mijorus.gearlever
         com.github.tchx84.Flatseal
@@ -214,7 +212,7 @@ tasks:
       - sudo usermod -aG libvirt $USER
 
   setup-desktop:
-    desc: Full desktop setup (upgrade, install, toolbox, flatpak, ohmyzsh)
+    desc: Full desktop setup (flatpak, ohmyzsh, auto-theme-switcher)
     cmds:
       - task: flatpak-config
       - task: flatpak-install-desktop
@@ -222,7 +220,7 @@ tasks:
       - task: auto-theme-switcher
 
   setup-laptop:
-    desc: Full laptop setup (upgrade, install, toolbox, flatpak, ohmyzsh, bluetooth)
+    desc: Full laptop setup (flatpak, ohmyzsh, auto-theme-switcher, bluetooth)
     cmds:
       - task: flatpak-config
       - task: flatpak-install-laptop
