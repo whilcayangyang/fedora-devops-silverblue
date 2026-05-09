@@ -8,17 +8,6 @@ Automated setup for Fedora 44 Silverblue using [go-task](https://taskfile.dev).
 
 - [`go-task`](https://taskfile.dev/installation/) installed
 
-## Getting Started
-
-All tasks run inside the devops toolbox container. Create and enter it first:
-
-```bash
-toolbox create --image ghcr.io/whilcayangyang/whil-docker-images/fedora-devops-toolbox:latest devops
-toolbox enter devops
-```
-
-Once inside the container, use `go-task` as normal.
-
 ## Before You Start
 
 > **Important:** Always run `upgrade` first, then install system packages, before proceeding with any setup task.
@@ -51,6 +40,7 @@ go-task setup-laptop
 | `upgrade` | Upgrade system via rpm-ostree |
 | `install-desktop` | Install system packages for desktop |
 | `install-laptop` | Install system packages for laptop (includes Tailscale) |
+| `toolbox` | Create devops toolbox container |
 | `flatpak-config` | Configure Flatpak remotes (disable Fedora, enable Flathub) |
 | `flatpak-install-desktop` | Install Flatpak apps for desktop |
 | `flatpak-install-laptop` | Install Flatpak apps for laptop |

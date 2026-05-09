@@ -56,6 +56,11 @@ tasks:
         vim
         tailscale
 
+  toolbox:
+    desc: Create devops toolbox container
+    cmds:
+      - toolbox create --image ghcr.io/whilcayangyang/whil-docker-images/fedora-devops-toolbox:latest devops
+
   flatpak-config:
     desc: Configure Flatpak remotes (disable Fedora, enable Flathub)
     cmds:
@@ -213,16 +218,18 @@ tasks:
       - sudo usermod -aG libvirt $USER
 
   setup-desktop:
-    desc: Full desktop setup (upgrade, install, flatpak, ohmyzsh)
+    desc: Full desktop setup (upgrade, install, toolbox, flatpak, ohmyzsh)
     cmds:
+      - task: toolbox
       - task: flatpak-config
       - task: flatpak-install-desktop
       - task: ohmyzsh
       - task: auto-theme-switcher
 
   setup-laptop:
-    desc: Full laptop setup (upgrade, install, flatpak, ohmyzsh, bluetooth)
+    desc: Full laptop setup (upgrade, install, toolbox, flatpak, ohmyzsh, bluetooth)
     cmds:
+      - task: toolbox
       - task: flatpak-config
       - task: flatpak-install-laptop
       - task: ohmyzsh
