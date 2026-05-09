@@ -73,6 +73,7 @@ tasks:
     desc: Install Flatpak applications from Flathub
     cmds:
       - flatpak install -y flathub
+        com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
         org.gtk.Gtk3theme.adw-gtk3
@@ -87,12 +88,14 @@ tasks:
         org.kde.kdenlive
         org.ardour.Ardour
         io.gitlab.adhami3310.Impression
+        de.haeckerfelix.Fragments
         dev.deedles.Trayscale
 
   flatpak-install-laptop:
     desc: Install Flatpak applications from Flathub (laptop only)
     cmds:
       - flatpak install -y flathub
+        com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
         org.gtk.Gtk3theme.adw-gtk3
@@ -105,8 +108,8 @@ tasks:
         com.github.tchx84.Flatseal
         org.videolan.VLC
         org.kde.kdenlive
-        org.ardour.Ardour
         io.gitlab.adhami3310.Impression
+        de.haeckerfelix.Fragments
         dev.deedles.Trayscale
 
   ohmyzsh:
