@@ -24,7 +24,6 @@ tasks:
         fuse
         fuse-libs
         zsh
-        curl
         git
         fastfetch
         powerline-fonts
@@ -45,7 +44,6 @@ tasks:
         fuse
         fuse-libs
         zsh
-        curl
         git
         fastfetch
         powerline-fonts
@@ -218,7 +216,6 @@ tasks:
   setup-desktop:
     desc: Full desktop setup (upgrade, install, toolbox, flatpak, ohmyzsh)
     cmds:
-      - task: toolbox
       - task: flatpak-config
       - task: flatpak-install-desktop
       - task: ohmyzsh
@@ -227,7 +224,6 @@ tasks:
   setup-laptop:
     desc: Full laptop setup (upgrade, install, toolbox, flatpak, ohmyzsh, bluetooth)
     cmds:
-      - task: toolbox
       - task: flatpak-config
       - task: flatpak-install-laptop
       - task: ohmyzsh
