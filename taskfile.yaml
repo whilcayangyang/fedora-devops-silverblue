@@ -15,7 +15,6 @@ tasks:
     desc: Install system packages for desktop (reboot required)
     cmds:
       - rpm-ostree install
-        go-task
         jetbrains-mono-fonts-all
         gnome-shell-extension-appindicator
         gnome-shell-extension-dash-to-dock
@@ -37,7 +36,6 @@ tasks:
     desc: Install system packages for laptop (reboot required)
     cmds:
       - rpm-ostree install
-        go-task
         jetbrains-mono-fonts-all
         gnome-shell-extension-appindicator
         gnome-shell-extension-dash-to-dock
@@ -192,12 +190,12 @@ tasks:
         --tpm2-device auto
         --tpm2-pcrs "0+1+2+7"
         /dev/{{.LUKS_DEV}}
-      - sudo sed -i '/tpm2-device/! s/discard/discard,tpm2-device=auto/' /etc/crypttab
 
-  dracut-regenerate:
-    desc: Regenerate initramfs for all kernels via dracut
+  update-initramfs:
+    desc: Update initramfs to include TPM2 support for LUKS auto-unlock (reboot required)
     cmds:
-      - sudo dracut -fv --regenerate-all
+      - sudo sed -i '/tpm2-device/! s/discard/discard,tpm2-device=auto/' /etc/crypttab
+      - rpm-ostree initramfs --enable
 
   install-virt:
     desc: Install virtualization packages via rpm-ostree (reboot required)

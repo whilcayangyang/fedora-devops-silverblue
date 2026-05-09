@@ -8,6 +8,11 @@ Automated setup for Fedora 44 Silverblue using [go-task](https://taskfile.dev).
 
 - [`go-task`](https://taskfile.dev/installation/) installed
 
+```bash
+rpm-ostree install go-task
+# reboot after package is layered
+```
+
 ## Before You Start
 
 > **Important:** Always run `upgrade` first, then install system packages, before proceeding with any setup task.
@@ -48,7 +53,7 @@ go-task setup-laptop
 | `bluetooth-disable` | Disable Bluetooth autostart (laptop only) |
 | `auto-theme-switcher` | Set up systemd timers for light (6AM) / dark (8PM) theme switching |
 | `luks-tpm2-enroll` | Enroll TPM2 key for LUKS auto-unlock on boot (laptop only) |
-| `dracut-regenerate` | Regenerate initramfs for all kernels via dracut |
+| `update-initramfs` | Enable rpm-ostree initramfs with TPM2 support (reboot required) |
 | `install-virt` | Install virtualization packages (virt-manager, qemu-kvm, libvirt, etc.) |
 | `config-virt` | Enable libvirtd and add user to libvirt group |
 | `setup-desktop` | Full desktop setup |
@@ -75,10 +80,11 @@ Then run tasks in order:
 
 ```bash
 go-task luks-tpm2-enroll
-go-task dracut-regenerate
+go-task update-initramfs
+# reboot after initramfs is updated
 ```
 
-`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+1+2+7 and updates `/etc/crypttab`. Run `dracut-regenerate` after to apply the initramfs changes.
+`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+1+2+7. Run `update-initramfs` after to patch `/etc/crypttab` and enable rpm-ostree initramfs with TPM2 support.
 
 ## Virtualization Setup
 
