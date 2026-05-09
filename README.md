@@ -47,14 +47,12 @@ go-task setup-laptop
 | `ohmyzsh` | Install Oh My Zsh and configure `.zshrc` |
 | `bluetooth-disable` | Disable Bluetooth autostart (laptop only) |
 | `auto-theme-switcher` | Set up systemd timers for light (6AM) / dark (8PM) theme switching |
+| `luks-verify` | Verify LUKS partition and print detected device |
+| `luks-tpm2-enroll` | Enroll TPM2 key for LUKS auto-unlock on boot (laptop only) |
 | `setup-desktop` | Full desktop setup |
 | `setup-laptop` | Full laptop setup |
 
 ## Notes
 
-- `auto-theme-switcher` writes systemd unit files but cannot enable them inside a toolbox container. After running, execute on the host:
-  ```bash
-  systemctl --user daemon-reload
-  systemctl --user enable --now theme-light.timer theme-dark.timer
-  ```
 - `install-desktop` / `install-laptop` require a reboot after `rpm-ostree install` to apply layered packages.
+- `luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+1+2+7, updates `/etc/crypttab`, and regenerates the initramfs via `dracut`.

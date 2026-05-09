@@ -15,6 +15,7 @@ tasks:
     desc: Install system packages for desktop
     cmds:
       - rpm-ostree install
+        go-task
         jetbrains-mono-fonts-all
         gnome-shell-extension-appindicator
         gnome-shell-extension-dash-to-dock
@@ -36,6 +37,7 @@ tasks:
     desc: Install system packages for laptop (includes tailscale)
     cmds:
       - rpm-ostree install
+        go-task
         jetbrains-mono-fonts-all
         gnome-shell-extension-appindicator
         gnome-shell-extension-dash-to-dock
@@ -169,10 +171,8 @@ tasks:
         [Install]
         WantedBy=timers.target
         EOF
-      - |
-        echo "NOTE: Exit toolbox and run on host:"
-        echo "  systemctl --user daemon-reload"
-        echo "  systemctl --user enable --now theme-light.timer theme-dark.timer"
+      - systemctl --user daemon-reload
+      - systemctl --user enable --now theme-light.timer theme-dark.timer
 
   bluetooth-disable:
     desc: Disable Bluetooth autostart (laptop only)
@@ -192,9 +192,9 @@ tasks:
     cmds:
       - task: luks-verify
       - sudo systemd-cryptenroll --wipe-slot tpm2
-          --tpm2-device auto
-          --tpm2-pcrs "0+1+2+7"
-          /dev/{{.LUKS_DEV}}
+        --tpm2-device auto
+        --tpm2-pcrs "0+1+2+7"
+        /dev/{{.LUKS_DEV}}
       - sudo sed -i '/tpm2-device/! s/discard/discard,tpm2-device=auto/' /etc/crypttab
       - sudo dracut -fv --regenerate-all
 
