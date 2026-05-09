@@ -179,23 +179,21 @@ tasks:
     cmds:
       - sudo sed -i 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
 
-  luks-verify:
-    desc: Verify LUKS partition and print detected device
-    cmds:
-      - lsblk -f | grep crypto_LUKS
-
   luks-tpm2-enroll:
     desc: Enroll TPM2 key for LUKS auto-unlock on boot (laptop only)
     vars:
       LUKS_DEV:
         sh: lsblk -rno NAME,FSTYPE | grep crypto_LUKS | awk '{print $1}'
     cmds:
-      - task: luks-verify
       - sudo systemd-cryptenroll --wipe-slot tpm2
         --tpm2-device auto
         --tpm2-pcrs "0+1+2+7"
         /dev/{{.LUKS_DEV}}
       - sudo sed -i '/tpm2-device/! s/discard/discard,tpm2-device=auto/' /etc/crypttab
+
+  dracut-regenerate:
+    desc: Regenerate initramfs for all kernels via dracut
+    cmds:
       - sudo dracut -fv --regenerate-all
 
   setup-desktop:

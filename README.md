@@ -47,12 +47,28 @@ go-task setup-laptop
 | `ohmyzsh` | Install Oh My Zsh and configure `.zshrc` |
 | `bluetooth-disable` | Disable Bluetooth autostart (laptop only) |
 | `auto-theme-switcher` | Set up systemd timers for light (6AM) / dark (8PM) theme switching |
-| `luks-verify` | Verify LUKS partition and print detected device |
 | `luks-tpm2-enroll` | Enroll TPM2 key for LUKS auto-unlock on boot (laptop only) |
+| `dracut-regenerate` | Regenerate initramfs for all kernels via dracut |
 | `setup-desktop` | Full desktop setup |
 | `setup-laptop` | Full laptop setup |
+
+## LUKS / TPM2 Setup
+
+Before enrolling TPM2, verify your LUKS device:
+
+```bash
+lsblk -f | grep crypto_LUKS
+```
+
+Then run tasks in order:
+
+```bash
+go-task luks-tpm2-enroll
+go-task dracut-regenerate
+```
+
+`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+1+2+7 and updates `/etc/crypttab`. Run `dracut-regenerate` after to apply the initramfs changes.
 
 ## Notes
 
 - `install-desktop` / `install-laptop` require a reboot after `rpm-ostree install` to apply layered packages.
-- `luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+1+2+7, updates `/etc/crypttab`, and regenerates the initramfs via `dracut`.
