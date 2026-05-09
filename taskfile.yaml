@@ -1,0 +1,199 @@
+version: "3"
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - go-task --list
+
+  upgrade:
+    desc: Upgrade the system via rpm-ostree
+    cmds:
+      - rpm-ostree upgrade
+
+  install-desktop:
+    desc: Install system packages for desktop
+    cmds:
+      - rpm-ostree install
+        jetbrains-mono-fonts-all
+        gnome-shell-extension-appindicator
+        gnome-shell-extension-dash-to-dock
+        gnome-shell-extension-system-monitor-applet
+        gnome-tweaks
+        adw-gtk3-theme
+        fuse
+        fuse-libs
+        zsh
+        curl
+        git
+        fastfetch
+        powerline-fonts
+        zsh-autosuggestions
+        zsh-syntax-highlighting
+        vim
+
+  install-laptop:
+    desc: Install system packages for laptop (includes tailscale)
+    cmds:
+      - rpm-ostree install
+        jetbrains-mono-fonts-all
+        gnome-shell-extension-appindicator
+        gnome-shell-extension-dash-to-dock
+        gnome-shell-extension-system-monitor-applet
+        gnome-tweaks
+        adw-gtk3-theme
+        fuse
+        fuse-libs
+        zsh
+        curl
+        git
+        fastfetch
+        powerline-fonts
+        zsh-autosuggestions
+        zsh-syntax-highlighting
+        vim
+        tailscale
+
+  toolbox:
+    desc: Create devops toolbox container
+    cmds:
+      - toolbox create --image ghcr.io/whilcayangyang/whil-docker-images/fedora-devops-toolbox:latest devops
+
+  flatpak-config:
+    desc: Configure Flatpak remotes (disable Fedora, enable Flathub)
+    cmds:
+      - sudo flatpak remote-modify --disable fedora
+      - sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+      - sudo flatpak remote-modify --enable flathub
+      - gsettings set org.gnome.software packaging-format-preference "['flatpak', 'rpm']"
+
+  flatpak-install-desktop:
+    desc: Install Flatpak applications from Flathub
+    cmds:
+      - flatpak install -y flathub
+        com.brave.Browser
+        com.mikrotik.WinBox
+        org.gtk.Gtk3theme.adw-gtk3
+        org.gtk.Gtk3theme.adw-gtk3-dark
+        org.gimp.GIMP
+        com.discordapp.Discord
+        com.slack.Slack
+        com.jgraph.drawio.desktop
+        it.mijorus.gearlever
+        com.github.tchx84.Flatseal
+        org.videolan.VLC
+        org.kde.kdenlive
+        org.ardour.Ardour
+        io.gitlab.adhami3310.Impression
+        dev.deedles.Trayscale
+
+  flatpak-install-laptop:
+    desc: Install Flatpak applications from Flathub (laptop only)
+    cmds:
+      - flatpak install -y flathub
+        com.brave.Browser
+        com.mikrotik.WinBox
+        org.gtk.Gtk3theme.adw-gtk3
+        org.gtk.Gtk3theme.adw-gtk3-dark
+        org.gimp.GIMP
+        com.discordapp.Discord
+        com.slack.Slack
+        com.jgraph.drawio.desktop
+        it.mijorus.gearlever
+        com.github.tchx84.Flatseal
+        org.videolan.VLC
+        org.kde.kdenlive
+        org.ardour.Ardour
+        io.gitlab.adhami3310.Impression
+        dev.deedles.Trayscale
+
+  ohmyzsh:
+    desc: Install Oh My Zsh and configure .zshrc
+    cmds:
+      - sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      - sed -i '/source $ZSH\/oh-my-zsh.sh/ a\source \/usr\/share\/zsh-autosuggestions\/zsh-autosuggestions.zsh' ~/.zshrc
+      - sed -i '/source $ZSH\/oh-my-zsh.sh/ a\source \/usr\/share\/zsh-syntax-highlighting\/zsh-syntax-highlighting.zsh' ~/.zshrc
+      - sed -i 's/plugins=(git)/plugins=(ansible fluxcd git k9s kubectl tailscale terraform)/' ~/.zshrc
+      - sed -i '$a\' ~/.zshrc
+      - |
+        cat >> ~/.zshrc << 'EOF'
+        export PATH="$HOME/.local/bin:$PATH"
+        alias claude='toolbox run --container devops $HOME/.local/bin/claude'
+        alias kubectl='toolbox run --container devops kubectl'
+        fastfetch
+        EOF
+
+  bluetooth-disable:
+    desc: Disable Bluetooth autostart (laptop only)
+    cmds:
+      - sudo sed -i 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
+
+  auto-theme-switcher:
+    desc: Set up systemd user timers to switch GNOME theme (light at 6AM, dark at 8PM)
+    cmds:
+      - mkdir -p ~/.config/systemd/user
+      - |
+        cat > ~/.config/systemd/user/theme-light.service << 'EOF'
+        [Unit]
+        Description=Switch to light theme
+
+        [Service]
+        Type=oneshot
+        ExecStart=/bin/bash -c 'gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3 && gsettings set org.gnome.desktop.interface color-scheme default'
+        EOF
+      - |
+        cat > ~/.config/systemd/user/theme-light.timer << 'EOF'
+        [Unit]
+        Description=Light theme at 6AM
+
+        [Timer]
+        OnCalendar=*-*-* 06:00:00
+        Persistent=true
+
+        [Install]
+        WantedBy=timers.target
+        EOF
+      - |
+        cat > ~/.config/systemd/user/theme-dark.service << 'EOF'
+        [Unit]
+        Description=Switch to dark theme
+
+        [Service]
+        Type=oneshot
+        ExecStart=/bin/bash -c 'gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark && gsettings set org.gnome.desktop.interface color-scheme prefer-dark'
+        EOF
+      - |
+        cat > ~/.config/systemd/user/theme-dark.timer << 'EOF'
+        [Unit]
+        Description=Dark theme at 8PM
+
+        [Timer]
+        OnCalendar=*-*-* 20:00:00
+        Persistent=true
+
+        [Install]
+        WantedBy=timers.target
+        EOF
+      - |
+        echo "NOTE: Exit toolbox and run on host:"
+        echo "  systemctl --user daemon-reload"
+        echo "  systemctl --user enable --now theme-light.timer theme-dark.timer"
+
+  setup-desktop:
+    desc: Full desktop setup (upgrade, install, toolbox, flatpak, ohmyzsh)
+    cmds:
+      - task: toolbox
+      - task: flatpak-config
+      - task: flatpak-install-desktop
+      - task: ohmyzsh
+      - task: auto-theme-switcher
+
+  setup-laptop:
+    desc: Full laptop setup (upgrade, install, toolbox, flatpak, ohmyzsh, bluetooth)
+    cmds:
+      - task: toolbox
+      - task: flatpak-config
+      - task: flatpak-install-laptop
+      - task: ohmyzsh
+      - task: bluetooth-disable
+      - task: auto-theme-switcher
