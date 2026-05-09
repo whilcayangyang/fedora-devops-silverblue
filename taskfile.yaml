@@ -69,6 +69,7 @@ tasks:
     desc: Install Flatpak applications from Flathub
     cmds:
       - flatpak install -y flathub
+        org.libreoffice.LibreOffice
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
@@ -90,6 +91,7 @@ tasks:
     desc: Install Flatpak applications from Flathub (laptop only)
     cmds:
       - flatpak install -y flathub
+        org.libreoffice.LibreOffice
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
