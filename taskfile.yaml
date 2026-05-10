@@ -69,13 +69,13 @@ tasks:
     desc: Install Flatpak applications from Flathub
     cmds:
       - flatpak install -y flathub
+        org.gtk.Gtk3theme.adw-gtk3
+        org.gtk.Gtk3theme.adw-gtk3-dark
         org.libreoffice.LibreOffice
         com.visualstudio.code
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
-        org.gtk.Gtk3theme.adw-gtk3
-        org.gtk.Gtk3theme.adw-gtk3-dark
         org.gimp.GIMP
         com.discordapp.Discord
         com.jgraph.drawio.desktop
@@ -91,13 +91,13 @@ tasks:
     desc: Install Flatpak applications from Flathub (laptop only)
     cmds:
       - flatpak install -y flathub
+        org.gtk.Gtk3theme.adw-gtk3
+        org.gtk.Gtk3theme.adw-gtk3-dark
         org.libreoffice.LibreOffice
         com.visualstudio.code
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
-        org.gtk.Gtk3theme.adw-gtk3
-        org.gtk.Gtk3theme.adw-gtk3-dark
         org.gimp.GIMP
         com.discordapp.Discord
         com.jgraph.drawio.desktop
