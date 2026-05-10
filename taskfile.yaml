@@ -177,7 +177,7 @@ tasks:
   bluetooth-disable:
     desc: Disable Bluetooth autostart (laptop only)
     cmds:
-      - sudo sed -i 's/^AutoEnable=true/AutoEnable=false/' /etc/bluetooth/main.conf
+      - sudo sed -i 's/^#*AutoEnable=.*/AutoEnable=true/' /etc/bluetooth/main.conf
 
   luks-tpm2-enroll:
     desc: Enroll TPM2 key for LUKS auto-unlock on boot (laptop only)
