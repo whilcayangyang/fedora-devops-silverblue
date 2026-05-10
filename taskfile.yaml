@@ -174,10 +174,10 @@ tasks:
       - systemctl --user daemon-reload
       - systemctl --user enable --now theme-light.timer theme-dark.timer
 
-  bluetooth-disable:
+  bluetooth-autostart-disable:
     desc: Disable Bluetooth autostart (laptop only)
     cmds:
-      - sudo sed -i 's/^#*AutoEnable=.*/AutoEnable=true/' /etc/bluetooth/main.conf
+      - sudo sed -i 's/^#*AutoEnable=.*/AutoEnable=false/' /etc/bluetooth/main.conf
 
   luks-tpm2-enroll:
     desc: Enroll TPM2 key for LUKS auto-unlock on boot (laptop only)
@@ -229,4 +229,4 @@ tasks:
       - task: flatpak-install-laptop
       - task: ohmyzsh
       - task: auto-theme-switcher
-      - task: bluetooth-disable
+      - task: bluetooth-autostart-disable
