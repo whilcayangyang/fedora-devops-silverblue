@@ -100,6 +100,19 @@ go-task config-virt
 
 `install-virt` layers virt-manager, qemu-kvm, libvirt, libvirt-daemon-config-network, virt-install, and bridge-utils via rpm-ostree. `config-virt` enables libvirtd, adds the `libvirt` group entry from `/usr/lib/group`, and adds your user to it.
 
+## Flatpak Icon Troubleshooting
+
+After installing Flatpak apps via script, application icons may not appear in the app launcher. This happens because the icon cache isn't refreshed automatically. Run:
+
+```bash
+sudo gtk-update-icon-cache -f /var/lib/flatpak/exports/share/icons/hicolor/
+sudo gtk4-update-icon-cache -f /var/lib/flatpak/exports/share/icons/hicolor/
+```
+
+- `gtk-update-icon-cache` targets GTK3 apps; `gtk4-update-icon-cache` targets GTK4 apps — run both to cover all Flatpaks.
+- The `-f` flag forces a rebuild even if the cache appears up to date.
+- A log out / log in or `killall gnome-shell` may still be needed for GNOME Shell to pick up the new cache.
+
 ## Notes
 
 - `install-desktop` / `install-laptop` / `install-virt` require a reboot after `rpm-ostree install` to apply layered packages.

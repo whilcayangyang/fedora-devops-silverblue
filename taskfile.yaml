@@ -70,6 +70,7 @@ tasks:
     cmds:
       - flatpak install -y flathub
         org.libreoffice.LibreOffice
+        com.visualstudio.code
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
@@ -85,13 +86,13 @@ tasks:
         org.ardour.Ardour
         io.gitlab.adhami3310.Impression
         de.haeckerfelix.Fragments
-        dev.deedles.Trayscale
 
   flatpak-install-laptop:
     desc: Install Flatpak applications from Flathub (laptop only)
     cmds:
       - flatpak install -y flathub
         org.libreoffice.LibreOffice
+        com.visualstudio.code
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
