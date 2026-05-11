@@ -179,6 +179,18 @@ tasks:
     cmds:
       - sudo sed -i 's/^#*AutoEnable=.*/AutoEnable=false/' /etc/bluetooth/main.conf
 
+  ssh-enable:
+    desc: Configure and enable SSH daemon with secure defaults
+    cmds:
+      - sudo sed -i 's/^#*PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+      - sudo sed -i 's/^#\(PubkeyAuthentication yes\)/\1/' /etc/ssh/sshd_config
+      - sudo sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+      - sudo sed -i 's/^#\(PermitEmptyPasswords no\)/\1/' /etc/ssh/sshd_config
+      - sudo sed -i 's/^#\(LoginGraceTime 2m\)/\1/' /etc/ssh/sshd_config
+      - sudo sed -i 's/^#\(MaxAuthTries 6\)/\1/' /etc/ssh/sshd_config
+      - sudo sed -i 's/^#\(MaxSessions 10\)/\1/' /etc/ssh/sshd_config
+      - sudo systemctl enable --now sshd.service
+
   luks-tpm2-enroll:
     desc: Enroll TPM2 key for LUKS auto-unlock on boot (laptop only)
     vars:
