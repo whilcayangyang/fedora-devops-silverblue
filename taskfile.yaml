@@ -21,6 +21,7 @@ tasks:
         gnome-shell-extension-system-monitor-applet
         gnome-tweaks
         adw-gtk3-theme
+        papirus-icon-theme libreoffice-icon-theme-papirus
         fuse
         fuse-libs
         zsh
@@ -30,6 +31,7 @@ tasks:
         zsh-autosuggestions
         zsh-syntax-highlighting
         vim
+        solaar
 
   install-laptop:
     desc: Install system packages for laptop (reboot required)
@@ -41,6 +43,7 @@ tasks:
         gnome-shell-extension-system-monitor-applet
         gnome-tweaks
         adw-gtk3-theme
+        papirus-icon-theme libreoffice-icon-theme-papirus
         fuse
         fuse-libs
         zsh
