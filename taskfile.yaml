@@ -133,6 +133,7 @@ tasks:
         cat > ~/.config/systemd/user/theme-light.service << 'EOF'
         [Unit]
         Description=Switch to light theme
+        After=graphical-session.target
 
         [Service]
         Type=oneshot
@@ -154,6 +155,7 @@ tasks:
         cat > ~/.config/systemd/user/theme-dark.service << 'EOF'
         [Unit]
         Description=Switch to dark theme
+        After=graphical-session.target
 
         [Service]
         Type=oneshot
