@@ -233,7 +233,8 @@ tasks:
     cmds:
       - sudo systemctl enable --now libvirtd
       - sudo grep -E '^libvirt:' /usr/lib/group | sudo tee -a /etc/group
-      - sudo usermod -aG libvirt $USER
+      - sudo grep -E '^kvm:' /usr/lib/group | sudo tee -a /etc/group
+      - sudo usermod -aG libvirt,kvm $USER
 
   setup-desktop:
     desc: Full desktop setup (flatpak, ohmyzsh, auto-theme-switcher)
