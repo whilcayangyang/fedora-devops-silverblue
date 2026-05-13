@@ -21,7 +21,8 @@ tasks:
         gnome-shell-extension-system-monitor-applet
         gnome-tweaks
         adw-gtk3-theme
-        papirus-icon-theme libreoffice-icon-theme-papirus
+        papirus-icon-theme
+        libreoffice-icon-theme-papirus
         fuse
         fuse-libs
         zsh
@@ -43,7 +44,8 @@ tasks:
         gnome-shell-extension-system-monitor-applet
         gnome-tweaks
         adw-gtk3-theme
-        papirus-icon-theme libreoffice-icon-theme-papirus
+        papirus-icon-theme
+        libreoffice-icon-theme-papirus
         fuse
         fuse-libs
         zsh
@@ -127,7 +129,6 @@ tasks:
         alias kubectl='toolbox run --container devops kubectl'
         alias k9s='toolbox run --container devops k9s'
         alias talosctl='toolbox run --container devops talosctl'
-        alias flux='toolbox run --container devops flux'
         alias terraform='toolbox run --container devops terraform'
         fastfetch
         EOF
