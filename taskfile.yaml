@@ -145,6 +145,7 @@ tasks:
 
         [Service]
         Type=oneshot
+        Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
         ExecStart=/bin/bash -c 'gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3 && gsettings set org.gnome.desktop.interface color-scheme default'
         EOF
       - |
@@ -167,6 +168,7 @@ tasks:
 
         [Service]
         Type=oneshot
+        Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
         ExecStart=/bin/bash -c 'gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark && gsettings set org.gnome.desktop.interface color-scheme prefer-dark'
         EOF
       - |
