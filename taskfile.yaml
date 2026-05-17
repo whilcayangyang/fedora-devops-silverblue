@@ -63,11 +63,12 @@ tasks:
       - toolbox create --image ghcr.io/whilcayangyang/whil-docker-images/fedora-devops-toolbox:latest devops
 
   flatpak-config:
-    desc: Configure Flatpak remotes (disable Fedora, enable Flathub)
+    desc: Configure Flatpak remotes (enable & prioritize Flathub)
     cmds:
-      - sudo flatpak remote-modify --disable fedora
       - sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
       - sudo flatpak remote-modify --enable flathub
+      - sudo flatpak remote-modify --system flathub --prio=1
+      - sudo flatpak remote-modify --system fedora --prio=0
       - gsettings set org.gnome.software packaging-format-preference "['flatpak', 'rpm']"
 
   flatpak-install-desktop:
