@@ -91,6 +91,9 @@ tasks:
         org.ardour.Ardour
         io.gitlab.adhami3310.Impression
         de.haeckerfelix.Fragments
+        page.codeberg.tahoso.azul-box
+        me.iepure.devtoolbox
+        io.github.flattool.Warehouse
 
   flatpak-install-laptop:
     desc: Install Flatpak applications from Flathub (laptop only)
@@ -112,6 +115,9 @@ tasks:
         org.kde.kdenlive
         io.gitlab.adhami3310.Impression
         de.haeckerfelix.Fragments
+        page.codeberg.tahoso.azul-box
+        me.iepure.devtoolbox
+        io.github.flattool.Warehouse
         dev.deedles.Trayscale
 
   ohmyzsh:
