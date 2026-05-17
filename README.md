@@ -46,11 +46,12 @@ go-task setup-laptop
 | `install-desktop` | Install system packages for desktop |
 | `install-laptop` | Install system packages for laptop (includes Tailscale) |
 | `toolbox` | Create devops toolbox container |
-| `flatpak-config` | Configure Flatpak remotes (disable Fedora, enable Flathub) |
+| `flatpak-config` | Configure Flatpak remotes (enable & prioritize Flathub) |
 | `flatpak-install-desktop` | Install Flatpak apps for desktop |
 | `flatpak-install-laptop` | Install Flatpak apps for laptop |
 | `ohmyzsh` | Install Oh My Zsh and configure `.zshrc` |
-| `bluetooth-disable` | Disable Bluetooth autostart (laptop only) |
+| `bluetooth-autostart-disable` | Disable Bluetooth autostart (laptop only) |
+| `ssh-enable` | Configure and enable SSH daemon with secure defaults |
 | `auto-theme-switcher` | Set up systemd timers for light (6AM) / dark (8PM) theme switching |
 | `luks-tpm2-enroll` | Enroll TPM2 key for LUKS auto-unlock on boot (laptop only) |
 | `update-initramfs` | Enable rpm-ostree initramfs with TPM2 support (reboot required) |
@@ -98,7 +99,7 @@ go-task config-virt
 # log out and back in for group membership to take effect
 ```
 
-`install-virt` layers virt-manager, qemu-kvm, libvirt, libvirt-daemon-config-network, virt-install, and bridge-utils via rpm-ostree. `config-virt` enables libvirtd, adds the `libvirt` group entry from `/usr/lib/group`, and adds your user to it.
+`install-virt` layers virt-manager, qemu-kvm, libvirt, libvirt-daemon-config-network, virt-install, and bridge-utils via rpm-ostree. `config-virt` enables libvirtd, adds the `libvirt` and `kvm` group entries from `/usr/lib/group`, and adds your user to both.
 
 ## Flatpak Icon Troubleshooting
 
