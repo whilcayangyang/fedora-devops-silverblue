@@ -57,6 +57,7 @@ go-task setup-laptop
 | `update-initramfs` | Enable rpm-ostree initramfs with TPM2 support (reboot required) |
 | `install-virt` | Install virtualization packages (virt-manager, qemu-kvm, libvirt, etc.) |
 | `config-virt` | Enable libvirtd and add user to libvirt group |
+| `firmware-update` | Refresh metadata and apply firmware updates via fwupd |
 | `setup-desktop` | Full desktop setup |
 | `setup-laptop` | Full laptop setup |
 
