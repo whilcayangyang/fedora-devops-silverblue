@@ -248,10 +248,10 @@ tasks:
   firmware-update:
     desc: Refresh metadata and apply firmware updates via fwupd
     cmds:
-      - sudo fwupdmgr refresh
+      - sudo fwupdmgr refresh --force
       - sudo fwupdmgr get-devices
-      - sudo fwupdmgr get-updates
-      - sudo fwupdmgr update
+      - sudo fwupdmgr get-updates || true
+      - sudo fwupdmgr update || true
 
   setup-desktop:
     desc: Full desktop setup (flatpak, ohmyzsh, auto-theme-switcher)
