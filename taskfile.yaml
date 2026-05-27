@@ -14,7 +14,9 @@ tasks:
   install-desktop:
     desc: Install system packages for desktop (reboot required)
     cmds:
+      - echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
       - rpm-ostree install
+        code
         jetbrains-mono-fonts-all
         gnome-shell-extension-appindicator
         gnome-shell-extension-dash-to-dock
@@ -37,7 +39,9 @@ tasks:
   install-laptop:
     desc: Install system packages for laptop (reboot required)
     cmds:
+      - echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
       - rpm-ostree install
+        code
         jetbrains-mono-fonts-all
         gnome-shell-extension-appindicator
         gnome-shell-extension-dash-to-dock
@@ -78,7 +82,6 @@ tasks:
         org.gtk.Gtk3theme.adw-gtk3
         org.gtk.Gtk3theme.adw-gtk3-dark
         org.libreoffice.LibreOffice
-        com.visualstudio.code
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
@@ -103,7 +106,6 @@ tasks:
         org.gtk.Gtk3theme.adw-gtk3
         org.gtk.Gtk3theme.adw-gtk3-dark
         org.libreoffice.LibreOffice
-        com.visualstudio.code
         com.bitwarden.desktop
         com.brave.Browser
         com.mikrotik.WinBox
@@ -136,6 +138,7 @@ tasks:
         alias k9s='toolbox run --container devops k9s'
         alias talosctl='toolbox run --container devops talosctl'
         alias terraform='toolbox run --container devops terraform'
+        alias vim='toolbox run --container devops vim'
         fastfetch
         EOF
 
