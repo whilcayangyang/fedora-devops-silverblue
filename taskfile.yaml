@@ -131,7 +131,7 @@ tasks:
       - |
         cat >> ~/.zshrc << 'EOF'
         export PATH="$HOME/.local/bin:$PATH"
-        alias claude='toolbox run --container devops $HOME/.local/bin/claude'
+        alias claude='toolbox run --container devops bash -c "$HOME/.local/bin/claude update; exec $HOME/.local/bin/claude"'
         alias kubectl='toolbox run --container devops kubectl'
         alias k9s='toolbox run --container devops k9s'
         alias talosctl='toolbox run --container devops talosctl'
