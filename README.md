@@ -1,5 +1,9 @@
 # fedora-devops-silverblue
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![Fedora](https://img.shields.io/badge/Fedora-44%20Silverblue-294172?logo=fedora&logoColor=white)](https://fedoraproject.org/silverblue/)
+[![go-task](https://img.shields.io/badge/built%20with-go--task-00ADD8?logo=task&logoColor=white)](https://taskfile.dev)
+
 Automated setup for Fedora 44 Silverblue using [go-task](https://taskfile.dev).
 
 > Tested on Fedora 44 Silverblue
@@ -61,6 +65,21 @@ go-task setup-laptop
 | `setup-desktop` | Full desktop setup |
 | `setup-laptop` | Full laptop setup |
 
+## Toolbox Aliases
+
+`ohmyzsh` appends aliases to `~/.zshrc` that transparently redirect common DevOps tooling into the `devops` toolbox container (created by the `toolbox` task), so the host system stays package-free:
+
+```bash
+alias claude='toolbox run --container devops bash -c "$HOME/.local/bin/claude update; exec $HOME/.local/bin/claude"'
+alias kubectl='toolbox run --container devops kubectl'
+alias k9s='toolbox run --container devops k9s'
+alias talosctl='toolbox run --container devops talosctl'
+alias terraform='toolbox run --container devops terraform'
+alias vim='toolbox run --container devops vim'
+```
+
+Run `go-task toolbox` before `ohmyzsh` so the `devops` container exists when these aliases are first invoked.
+
 ## Theme Switcher
 
 To test the theme timers manually after running `auto-theme-switcher`:
@@ -118,3 +137,7 @@ sudo gtk4-update-icon-cache -f /var/lib/flatpak/exports/share/icons/hicolor/
 ## Notes
 
 - `install-desktop` / `install-laptop` / `install-virt` require a reboot after `rpm-ostree install` to apply layered packages.
+
+## License
+
+Licensed under the [GNU General Public License v3.0](LICENSE).
