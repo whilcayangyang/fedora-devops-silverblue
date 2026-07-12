@@ -57,7 +57,7 @@ go-task setup-laptop
 | `bluetooth-autostart-disable` | Disable Bluetooth autostart (laptop only) |
 | `ssh-enable` | Configure and enable SSH daemon with secure defaults |
 | `auto-theme-switcher` | Set up systemd timers for light (6AM) / dark (8PM) theme switching |
-| `luks-tpm2-enroll` | Enroll TPM2 key for LUKS auto-unlock on boot (laptop only) |
+| `luks-tpm2-enroll` | Enroll TPM2 key for LUKS auto-unlock on boot |
 | `update-initramfs` | Enable rpm-ostree initramfs with TPM2 support (reboot required) |
 | `install-virt` | Install virtualization packages (virt-manager, qemu-kvm, libvirt, etc.) |
 | `config-virt` | Enable libvirtd and add user to libvirt group |
@@ -105,7 +105,7 @@ go-task update-initramfs
 # reboot after initramfs is updated
 ```
 
-`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+1+2+7. Run `update-initramfs` after to patch `/etc/crypttab` and enable rpm-ostree initramfs with TPM2 support.
+`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+2+7. Run `update-initramfs` after to patch `/etc/crypttab` and enable rpm-ostree initramfs with TPM2 support.
 
 ## Virtualization Setup
 
