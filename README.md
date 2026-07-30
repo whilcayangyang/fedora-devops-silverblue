@@ -10,22 +10,20 @@ Automated setup for Fedora 44 Silverblue using [go-task](https://taskfile.dev).
 
 ## Prerequisites
 
-- [`go-task`](https://taskfile.dev/installation/) installed
+- System upgraded and [`go-task`](https://taskfile.dev/installation/) installed, before proceeding with any setup task
 
 ```bash
+rpm-ostree upgrade
 rpm-ostree install go-task
-# reboot after package is layered
+# reboot once after both complete
 ```
 
 ## Before You Start
 
-> **Important:** Always run `upgrade` first, then install system packages, before proceeding with any setup task.
+> **Important:** Install system packages before proceeding with any other setup task.
 
 ```bash
-go-task upgrade
-# reboot after upgrade completes
-
-go-task install-desktop   # or install-laptop
+go-task install-plasma-system-app   # or install-gnome-system-app
 # reboot after packages are layered
 ```
 
@@ -35,35 +33,42 @@ go-task install-desktop   # or install-laptop
 # List all available tasks
 go-task
 
-# Full desktop setup
-go-task setup-desktop
-
-# Full laptop setup (includes Tailscale + Bluetooth disable)
-go-task setup-laptop
+# Run an individual task
+go-task <task-name>
 ```
+
+There is no single composite setup task — run the tasks you need in the order
+shown in [Task Execution Order](#task-execution-order) below.
 
 ## Tasks
 
 | Task | Description |
 |------|-------------|
-| `upgrade` | Upgrade system via rpm-ostree |
-| `install-desktop` | Install system packages for desktop |
-| `install-laptop` | Install system packages for laptop (includes Tailscale) |
-| `toolbox` | Create devops toolbox container |
+| `install-plasma-system-app` | Install system packages for desktop (KDE Plasma, reboot required) |
+| `install-gnome-system-app` | Install system packages for laptop (GNOME, reboot required, includes Tailscale) |
 | `flatpak-config` | Configure Flatpak remotes (enable & prioritize Flathub) |
-| `flatpak-install-desktop` | Install Flatpak apps for desktop |
-| `flatpak-install-laptop` | Install Flatpak apps for laptop |
+| `flatpak-plasma-app` | Install Flatpak applications from Flathub (Plasma only) |
+| `flatpak-gnome-app` | Install Flatpak applications from Flathub (GNOME only) |
+| `toolbox` | Create devops toolbox container |
 | `ohmyzsh` | Install Oh My Zsh and configure `.zshrc` |
+| `gnome-auto-theme-switcher` | Set up systemd timers to switch GNOME theme (light at 6AM, dark at 8PM) |
 | `bluetooth-autostart-disable` | Disable Bluetooth autostart (laptop only) |
 | `ssh-enable` | Configure and enable SSH daemon with secure defaults |
-| `auto-theme-switcher` | Set up systemd timers for light (6AM) / dark (8PM) theme switching |
 | `luks-tpm2-enroll` | Enroll TPM2 key for LUKS auto-unlock on boot |
-| `update-initramfs` | Enable rpm-ostree initramfs with TPM2 support (reboot required) |
-| `install-virt` | Install virtualization packages (virt-manager, qemu-kvm, libvirt, etc.) |
-| `config-virt` | Enable libvirtd and add user to libvirt group |
+| `luks-initramfs` | Update initramfs to include TPM2 support for LUKS auto-unlock (reboot required) |
+| `install-virt` | Install virtualization packages (virt-manager, qemu-kvm, libvirt, etc., reboot required) |
+| `config-virt` | Enable libvirtd and add user to libvirt group (reboot required) |
 | `firmware-update` | Refresh metadata and apply firmware updates via fwupd |
-| `setup-desktop` | Full desktop setup |
-| `setup-laptop` | Full laptop setup |
+
+## Task Execution Order
+
+Some tasks have hard ordering dependencies:
+
+1. `rpm-ostree upgrade` (manual prerequisite, see [Prerequisites](#prerequisites)) → reboot → `install-plasma-system-app` or `install-gnome-system-app` → reboot
+2. `luks-tpm2-enroll` → `luks-initramfs` → reboot
+3. `install-virt` → reboot → `config-virt` → log out/in
+
+All other tasks (`toolbox`, `ohmyzsh`, `flatpak-config`, `flatpak-plasma-app` / `flatpak-gnome-app`, `gnome-auto-theme-switcher`, `bluetooth-autostart-disable`, `ssh-enable`, `firmware-update`) can be run independently once system packages are installed.
 
 ## Toolbox Aliases
 
@@ -82,7 +87,7 @@ Run `go-task toolbox` before `ohmyzsh` so the `devops` container exists when the
 
 ## Theme Switcher
 
-To test the theme timers manually after running `auto-theme-switcher`:
+To test the theme timers manually after running `gnome-auto-theme-switcher`:
 
 ```bash
 systemctl --user start theme-light.service
@@ -101,11 +106,11 @@ Then run tasks in order:
 
 ```bash
 go-task luks-tpm2-enroll
-go-task update-initramfs
+go-task luks-initramfs
 # reboot after initramfs is updated
 ```
 
-`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+2+7. Run `update-initramfs` after to patch `/etc/crypttab` and enable rpm-ostree initramfs with TPM2 support.
+`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+2+7. Run `luks-initramfs` after to patch `/etc/crypttab` and enable rpm-ostree initramfs with TPM2 support.
 
 ## Virtualization Setup
 
@@ -136,7 +141,7 @@ sudo gtk4-update-icon-cache -f /var/lib/flatpak/exports/share/icons/hicolor/
 
 ## Notes
 
-- `install-desktop` / `install-laptop` / `install-virt` require a reboot after `rpm-ostree install` to apply layered packages.
+- `install-plasma-system-app` / `install-gnome-system-app` / `install-virt` require a reboot after `rpm-ostree install` to apply layered packages.
 
 ## License
 

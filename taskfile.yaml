@@ -6,25 +6,13 @@ tasks:
     cmds:
       - go-task --list
 
-  upgrade:
-    desc: Upgrade the system via rpm-ostree (reboot required)
-    cmds:
-      - rpm-ostree upgrade
-
-  install-desktop:
-    desc: Install system packages for desktop (reboot required)
+  install-plasma-system-app:
+    desc: Install system packages for desktop (KDE Plasma, reboot required)
     cmds:
       - echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
       - rpm-ostree install
         code
         jetbrains-mono-fonts-all
-        gnome-shell-extension-appindicator
-        gnome-shell-extension-dash-to-dock
-        gnome-shell-extension-system-monitor-applet
-        gnome-tweaks
-        adw-gtk3-theme
-        papirus-icon-theme
-        libreoffice-icon-theme-papirus
         fuse
         fuse-libs
         zsh
@@ -35,8 +23,8 @@ tasks:
         zsh-syntax-highlighting
         solaar
 
-  install-laptop:
-    desc: Install system packages for laptop (reboot required)
+  install-gnome-system-app:
+    desc: Install system packages for laptop (GNOME, reboot required)
     cmds:
       - echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\nautorefresh=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/vscode.repo > /dev/null
       - rpm-ostree install
@@ -47,8 +35,6 @@ tasks:
         gnome-shell-extension-system-monitor-applet
         gnome-tweaks
         adw-gtk3-theme
-        papirus-icon-theme
-        libreoffice-icon-theme-papirus
         fuse
         fuse-libs
         zsh
@@ -59,11 +45,6 @@ tasks:
         zsh-syntax-highlighting
         tailscale
 
-  toolbox:
-    desc: Create devops toolbox container
-    cmds:
-      - toolbox create --image ghcr.io/whilcayangyang/whil-docker-images/fedora-devops-toolbox:latest devops
-
   flatpak-config:
     desc: Configure Flatpak remotes (enable & prioritize Flathub)
     cmds:
@@ -71,37 +52,33 @@ tasks:
       - sudo flatpak remote-modify --enable flathub
       - sudo flatpak remote-modify --system flathub --prio=1
       - sudo flatpak remote-modify --system fedora --prio=0
-      - gsettings set org.gnome.software packaging-format-preference "['flatpak', 'rpm']"
 
-  flatpak-install-desktop:
-    desc: Install Flatpak applications from Flathub
+  flatpak-plasma-app:
+    desc: Install Flatpak applications from Flathub (Plasma only)
     cmds:
       - flatpak install -y flathub
-        org.gtk.Gtk3theme.adw-gtk3
-        org.gtk.Gtk3theme.adw-gtk3-dark
         org.onlyoffice.desktopeditors
         me.proton.Mail
         me.proton.Pass
         app.zen_browser.zen
-        net.nokyan.Resources
         com.mikrotik.WinBox
         org.gimp.GIMP
         com.slack.Slack
         com.jgraph.drawio.desktop
         it.mijorus.gearlever
         com.github.tchx84.Flatseal
-        org.videolan.VLC
-        io.gitlab.adhami3310.Impression
-        de.haeckerfelix.Fragments
         me.iepure.devtoolbox
-        io.github.flattool.Warehouse
         org.kde.kdenlive
+        org.kde.ktorrent
+        org.kde.isoimagewriter
+        org.kde.dragonplayer
         org.ardour.Ardour
         page.codeberg.tahoso.azul-box
 
-  flatpak-install-laptop:
-    desc: Install Flatpak applications from Flathub (laptop only)
+  flatpak-gnome-app:
+    desc: Install Flatpak applications from Flathub (GNOME only)
     cmds:
+      - gsettings set org.gnome.software packaging-format-preference "['flatpak', 'rpm']"
       - flatpak install -y flathub
         org.gtk.Gtk3theme.adw-gtk3
         org.gtk.Gtk3theme.adw-gtk3-dark
@@ -123,6 +100,11 @@ tasks:
         io.github.flattool.Warehouse
         dev.deedles.Trayscale
 
+  toolbox:
+    desc: Create devops toolbox container
+    cmds:
+      - toolbox create --image ghcr.io/whilcayangyang/whil-docker-images/fedora-devops-toolbox:latest devops
+
   ohmyzsh:
     desc: Install Oh My Zsh and configure .zshrc
     cmds:
@@ -143,7 +125,7 @@ tasks:
         fastfetch
         EOF
 
-  auto-theme-switcher:
+  gnome-auto-theme-switcher:
     desc: Set up systemd user timers to switch GNOME theme (light at 6AM, dark at 8PM)
     cmds:
       - mkdir -p ~/.config/systemd/user
@@ -197,7 +179,7 @@ tasks:
       - systemctl --user enable --now theme-light.timer theme-dark.timer
 
   bluetooth-autostart-disable:
-    desc: Disable Bluetooth autostart (laptop only)
+    desc: Disable Bluetooth autostart
     cmds:
       - sudo sed -i 's/^#*AutoEnable=.*/AutoEnable=false/' /etc/bluetooth/main.conf
 
@@ -224,7 +206,7 @@ tasks:
         --tpm2-pcrs "0+2+7"
         /dev/{{.LUKS_DEV}}
 
-  update-initramfs:
+  luks-initramfs:
     desc: Update initramfs to include TPM2 support for LUKS auto-unlock (reboot required)
     cmds:
       - sudo sed -i '/tpm2-device/! s/discard/discard,tpm2-device=auto/' /etc/crypttab
@@ -256,20 +238,3 @@ tasks:
       - sudo fwupdmgr get-devices
       - sudo fwupdmgr get-updates || true
       - sudo fwupdmgr update || true
-
-  setup-desktop:
-    desc: Full desktop setup (flatpak, ohmyzsh, auto-theme-switcher)
-    cmds:
-      - task: flatpak-config
-      - task: flatpak-install-desktop
-      - task: ohmyzsh
-      - task: auto-theme-switcher
-
-  setup-laptop:
-    desc: Full laptop setup (flatpak, ohmyzsh, auto-theme-switcher, bluetooth)
-    cmds:
-      - task: flatpak-config
-      - task: flatpak-install-laptop
-      - task: ohmyzsh
-      - task: auto-theme-switcher
-      - task: bluetooth-autostart-disable
