@@ -110,7 +110,7 @@ go-task luks-initramfs
 # reboot after initramfs is updated
 ```
 
-`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+2+7. Run `luks-initramfs` after to patch `/etc/crypttab` and enable rpm-ostree initramfs with TPM2 support.
+`luks-tpm2-enroll` binds the LUKS slot to TPM2 PCRs 0+2+4+7 (PCR4 covers the bootloader/shim binary, so auto-unlock also fails if a different boot chain — e.g. alternate boot media — executes). Run `luks-initramfs` after to patch `/etc/crypttab` and enable rpm-ostree initramfs with TPM2 support.
 
 ## Virtualization Setup
 

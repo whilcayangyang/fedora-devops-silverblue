@@ -29,7 +29,7 @@ There is no composite setup task — each task is run individually in the order 
 
 - `rpm-ostree` is immutable-OS aware — package changes are staged and only active after reboot.
 - `luks-tpm2-enroll` auto-detects the LUKS device via `lsblk`. Run `lsblk -f | grep crypto_LUKS` to verify the device before running.
-- TPM2 PCR binding uses `0+2+7`. Changing firmware or bootloader will break auto-unlock.
+- TPM2 PCR binding uses `0+2+4+7`. Changing firmware, Secure Boot state, or the bootloader (shim/GRUB) binaries will break auto-unlock and require re-running `luks-tpm2-enroll`. Routine kernel/initramfs updates do not trigger re-enrollment.
 - The `ohmyzsh` task appends to `~/.zshrc` rather than replacing it — running it twice will duplicate entries.
 - `toolbox` pulls `ghcr.io/whilcayangyang/whil-docker-images/fedora-devops-toolbox:latest` — this is the user's private image.
 
