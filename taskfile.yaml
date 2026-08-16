@@ -230,6 +230,8 @@ tasks:
       - sudo grep -E '^libvirt:' /usr/lib/group | sudo tee -a /etc/group
       - sudo grep -E '^kvm:' /usr/lib/group | sudo tee -a /etc/group
       - sudo usermod -aG libvirt,kvm $USER
+      - sudo firewall-cmd --zone=libvirt --change-interface=virbr0 --permanent
+      - sudo firewall-cmd --reload
 
   firmware-update:
     desc: Refresh metadata and apply firmware updates via fwupd
