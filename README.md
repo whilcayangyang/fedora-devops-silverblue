@@ -51,6 +51,7 @@ shown in [Task Execution Order](#task-execution-order) below.
 | `flatpak-gnome-app` | Install Flatpak applications from Flathub (GNOME only) |
 | `toolbox` | Create devops toolbox container |
 | `ohmyzsh` | Install Oh My Zsh and configure `.zshrc` |
+| `proton-apps` | Install/upgrade Proton Mail (beta) and Proton Pass from the latest upstream RPMs via rpm-ostree (reboot required) |
 | `gnome-auto-theme-switcher` | Set up systemd timers to switch GNOME theme (light at 6AM, dark at 8PM) |
 | `bluetooth-autostart-disable` | Disable Bluetooth autostart (laptop only) |
 | `ssh-enable` | Configure and enable SSH daemon with secure defaults |
@@ -68,7 +69,7 @@ Some tasks have hard ordering dependencies:
 2. `luks-tpm2-enroll` → `luks-initramfs` → reboot
 3. `install-virt` → reboot → `config-virt` → log out/in
 
-All other tasks (`toolbox`, `ohmyzsh`, `flatpak-config`, `flatpak-plasma-app` / `flatpak-gnome-app`, `gnome-auto-theme-switcher`, `bluetooth-autostart-disable`, `ssh-enable`, `firmware-update`) can be run independently once system packages are installed.
+All other tasks (`toolbox`, `ohmyzsh`, `proton-apps`, `flatpak-config`, `flatpak-plasma-app` / `flatpak-gnome-app`, `gnome-auto-theme-switcher`, `bluetooth-autostart-disable`, `ssh-enable`, `firmware-update`) can be run independently once system packages are installed.
 
 ## Toolbox Aliases
 

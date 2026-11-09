@@ -125,6 +125,17 @@ tasks:
         fastfetch
         EOF
 
+  proton-apps:
+    desc: Install/upgrade Proton Mail (beta) and Proton Pass via rpm-ostree (reboot required)
+    vars:
+      PROTON_TMP:
+        sh: mktemp -d
+    cmds:
+      - defer: rm -rf "{{.PROTON_TMP}}"
+      - curl -fL -o "{{.PROTON_TMP}}/ProtonMail-desktop-beta.rpm" https://proton.me/download/mail/linux/ProtonMail-desktop-beta.rpm
+      - curl -fL -o "{{.PROTON_TMP}}/ProtonPass.rpm" https://proton.me/download/pass/linux/ProtonPass.rpm
+      - rpm-ostree install "{{.PROTON_TMP}}/ProtonMail-desktop-beta.rpm" "{{.PROTON_TMP}}/ProtonPass.rpm"
+
   gnome-auto-theme-switcher:
     desc: Set up systemd user timers to switch GNOME theme (light at 6AM, dark at 8PM)
     cmds:
